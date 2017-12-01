@@ -1,0 +1,15 @@
+{
+	:dev {
+		:root-directory "/"
+		:exluded-directories [ "/user" "/something"]
+		:db {
+			:path "hello/db.sql"
+			:dbtype "mysql"
+			:dbname "mydb"
+			:user "myaccount"
+			:password "secret"
+		}
+	}
+	:prod {
+	}
+};end
