@@ -50,6 +50,19 @@
   (let [splt (strg/split file-name #"(?<=/)")]
     [(apply str (drop-last splt)) (last splt)]))
 
+(defn create-table
+  [db table-name]
+  (try
+    (dao/execute db
+      (str  "CREATE TABLE "
+            table-name
+            "(id INTEGER PRIMARY KEY, "
+            "path TEXT, entry TEXT, "
+            "is_file INTEGER, size INTEGER)"))
+      {:ok (str "Table " table-name " has been successfully created")}
+    (catch Exception e
+      {:err "Error while creating table" :msg (.getMessage e)})))
+
 (defn -main
   [& args]
   (let [
@@ -61,17 +74,14 @@
         db                                          (dao/open ;todo move to config
                                                       (dao/create "jdbc:sqlite:/tmp/data.db"))
         table-name                                  (str "entries_" (get-utc-string))
-        create-table                                (try
-                                                      (dao/execute db
-                                                        (str "CREATE TABLE "
-                                                           table-name
-                                                           "(id INTEGER PRIMARY KEY, "
-                                                           "path TEXT, entry TEXT, "
-                                                           "is_file INTEGER, size INTEGER)"))
-                                                      (catch Exception e (log/error
-                                                        "caught exception: "
-                                                        (.getMessage e))))
-        ;SQLiteException [SQLITE_ERROR] SQL error or missing database (table entries already exists)  org.sqlite.core.DB.newSQLException (DB.java:909)
+        table-maybe-created                         (cond
+                                                      (:ok (create-table db table-name))
+                                                        (log/info (str "Table " table-name " has been successfully created"))
+                                                      :else
+                                                        (log/error (str "Could not create table " table-name)))
+
+        ;SQLiteException [SQLITE_ERROR] SQL error or missing database (table entries already exists)
+        ;org.sqlite.core.DB.newSQLException (DB.java:909)
 
         insert-query                                (str "INSERT INTO "
                                                          table-name
@@ -81,8 +91,10 @@
     ; main entry point for execution
     (log/info (str ":ok" " env " env))
 
-    (doseq [f (files "/tmp/test")]
-      (dao/execute db insert-query (get-file-name f) (is-file? f) (get-file-size f)))
+    (doseq [f (files "/etc/")]
+      (let [file-name (get-file-name f)
+            split-file-name (split-file-path file-name)]
+        (dao/execute db insert-query  (first split-file-name) (second split-file-name) (is-file? f) (get-file-size f))))
 
     (log/info "init :: stop"))
     (System/exit 0))
