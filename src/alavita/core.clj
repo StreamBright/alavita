@@ -63,6 +63,11 @@
     (catch Exception e
       {:err "Error while creating table" :msg (.getMessage e)})))
 
+(defn insert-into-table
+  [db query data]
+  (let [ex (partial dao/execute db query)]
+    (apply ex data)))
+
 (defn -main
   [& args]
   (let [
@@ -92,9 +97,9 @@
     (log/info (str ":ok" " env " env))
 
     (doseq [f (files "/etc/")]
-      (let [file-name (get-file-name f)
+      (let [file-name       (get-file-name f)
             split-file-name (split-file-path file-name)]
-        (dao/execute db insert-query  (first split-file-name) (second split-file-name) (is-file? f) (get-file-size f))))
+        (insert-into-table db insert-query  (list (first split-file-name) (second split-file-name) (is-file? f) (get-file-size f)))))
 
     (log/info "init :: stop"))
     (System/exit 0))
