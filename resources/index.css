@@ -1,0 +1,31 @@
+* {box-sizing: border-box;}
+.wrapper {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.wrapper > div {
+  border: 2px solid rgb(132,132,132);
+  border-radius: 5px;
+  background-color: rgba(216,216,216,.5);
+  padding: 1em;
+  color: #383838;
+}.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.one {
+  grid-column: 1;
+  grid-row: 1;
+}
+.two {
+  grid-column: 1;
+  grid-row: 2 / 5;
+}
+.three {
+  grid-column: 2;
+  grid-row: 1 / 5;
+}

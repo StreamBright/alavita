@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alavita :: Disk Usage</title>
+    <link href="index.css" type="text/css" rel="stylesheet" />
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
+    <link rel="stylesheet" type="text/css" href="seq.css"/>
+  </head>
+
+  <body>
+
+    <div class="wrapper">
+      <div class="one">
+        Path  Size  Files Directories Date  Time
+        / 328.6M  10062 1109  2016-03-12  11:58:23
+      </div>
+
+      <div class="two">
+        <div id="sequence"></div>
+          <div id="chart">
+            <div id="explanation" style="visibility: hidden;">
+              <span id="percentage"></span><br/>
+            </div>
+          </div>
+        </div>
+      <div class="three">
+        <table>
+          <tr>
+            <th class=name>Filename</th>
+            <th class=size>Size</th>
+          </tr>
+          <tr>
+            <td class=name><a href="#">usr</a>
+            <td class=size>142.4M</td>
+          </tr>
+          <tr>
+            <td class=name><a href="#">var</a>
+            <td class=size>134.3M</td>
+          </tr>
+          <tr>
+            <td class=name><a href="#">lib</a>
+            <td class=size>35.1M</td>
+          </tr>
+          <tr>
+            <td class=name><a href="#">bin</a>
+            <td class=size>9.7M</td>
+          </tr>
+          <tr>
+            <td class=name><a href="#">sbin</a>
+            <td class=size>4.7M</td>
+          </tr>
+          <tr>
+            <td class=name><a href="#">etc</a>
+            <td class=size>1.3M</td>
+          </tr>
+          <tr>
+            <td class=name>b<td class=size>368.0K</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript" src="seq.js"></script>
+  </body>
+</html>
