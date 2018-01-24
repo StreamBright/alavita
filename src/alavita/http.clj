@@ -18,6 +18,13 @@
    (.set Conf/HTTP "serverName" "lofasz")
    (.set Conf/HTTP "maxPipeline" 128)))
 
+(defn ^java.util.function.Function as-function [f]
+  (reify java.util.function.Function
+    (apply [this arg] (f arg))))
+
+(defmacro jfn [& args]
+  `(as-function (fn ~@args)))
+
 (defn get-route
   ^OnRoute [^String path]
   (On/get path))
