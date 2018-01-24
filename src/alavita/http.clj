@@ -32,7 +32,8 @@
         _           (set-managed! route-echo false)
         route-hi    (get-route "/hi")
         _           (set-managed! route-hi false)
+        json-handlr (handlers/create-request-handler handlers/json-handler)
         ]
     (set-http-params!)
-    (.json route-echo #(handlers/json-handler %))
+    (.json route-echo json-handlr)
     (.plain route-hi handlers/plain-handler)))
