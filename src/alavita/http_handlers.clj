@@ -6,21 +6,19 @@
         :author "Istvan Szukacs"      }
   alavita.http-handlers
   (:import
-    [org.rapidoid.http  Req ReqHandler  ]
-    [org.rapidoid.u     U               ] )
+    [org.rapidoid.http  Req ]
+    [org.rapidoid.u     U   ] )
   (:gen-class
     :methods
      [
-      ^:static [json-handler [org.rapidoid.http.Req] java.util.Map]
-      ^:static [plain-handler [] java.lang.String]
+      ^:static [jsonhandler [org.rapidoid.http.Req] java.util.Map]
+      ^:static [plainhandler [] java.lang.String]
       ]))
 
-(defn json-handler
+(defn jsonhandler
+  [^Req req]
+  (U/map (.headers req)))
+
+(defn plainhandler
   []
   "{\"ok\": \"ok\"}")
-
-
-(defn plain-handler
-  []
-  "{\"ok\": \"ok\"}")
-

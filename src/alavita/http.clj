@@ -9,9 +9,9 @@
     [alavita.http-handlers      :as handlers    ]
     [clojure.tools.logging      :as log         ] )
   (:import
-    [java.util.function   Function    ]
-    [org.rapidoid.config  Conf        ]
-    [org.rapidoid.setup   On OnRoute  ] ) )
+    [org.rapidoid.http    Req ReqHandler  ]
+    [org.rapidoid.config  Conf            ]
+    [org.rapidoid.setup   On OnRoute      ] ) )
 
 (defn set-http-params!
   []
@@ -20,13 +20,9 @@
    (.set Conf/HTTP "maxPipeline" 128)))
 
 (defn as-function
-  ^Function [f]
-  (reify Function
-    (apply [this arg] (f arg))))
-
-(defmacro jfn
-  [& args]
-  `(as-function (fn ~@args)))
+  ^ReqHandler [f]
+  (reify ReqHandler
+    (execute [this ^Object req] (f req))))
 
 (defn get-route
   ^OnRoute [^String path]
@@ -39,10 +35,10 @@
 (defn start
   []
   (let [route-echo  (get-route "/echo")
-        _           (set-managed! route-echo false)
+        _           (set-managed! route-echo true)
         route-hi    (get-route "/hi")
-        _           (set-managed! route-hi false)
+        _           (set-managed! route-hi true)
         ]
     (set-http-params!)
-    (.json route-echo (as-function handlers/json-handler))
-    (.plain route-hi handlers/plain-handler)))
+    (.json route-echo (as-function handlers/jsonhandler))
+    (.plain route-hi handlers/plainhandler)))
