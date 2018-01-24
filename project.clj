@@ -25,10 +25,10 @@
       ]
     ]
   ]
-  :mirrors {"cloudera" {  :name "cloudera"
-                          :url "https://repository.cloudera.com/content/repositories/releases/" }
+  :repositories {"cloudera" {:name "cloudera"
+                             :url "https://repository.cloudera.com/content/repositories/releases/" }
 
-            "maven" {     :name "maven"
+                 "maven" {:name "maven"
                           :url "https://repo.maven.apache.org/maven2/" } }
   :exclusions [
     javax.mail/mail
